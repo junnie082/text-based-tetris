@@ -1,5 +1,7 @@
 package src.ui;
 
+import logic.SettingController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -7,12 +9,14 @@ import java.awt.event.*;
 import static component.Button.createBtn;
 
 public class KeySettingScreen extends JFrame {
-    private JLabel[] labels = new JLabel[4];
-    private JTextField[] textFields = new JTextField[4];
+    private JLabel[] labels = new JLabel[5];
+    public JTextField[] textFields = new JTextField[5];
     private JButton btnInitialize = createBtn("Initialize", "initialize", this::actionPerformed);
     private JButton btnBack = createBtn("Back", "back", this::actionPerformed);
 
     private int focusedIndex = 0;
+
+    private SettingController settingController = new SettingController();
 
     public KeySettingScreen() {
         setTitle("Key Setting");
@@ -34,6 +38,9 @@ public class KeySettingScreen extends JFrame {
                 labels[i].setText("Right Key");
                 textFields[i] = new JTextField("Press Enter to Set Key");
             } else if (i == 3) {
+                labels[i].setText("Go down faster");
+                textFields[i] = new JTextField("Press Enter to Set Key");
+            } else if (i == 4) {
                 labels[i].setText("Go down at once");
                 textFields[i] = new JTextField("Press Enter to Set Key");
             }
@@ -135,11 +142,13 @@ public class KeySettingScreen extends JFrame {
 
         } else if (command.equals("back")) {
             setVisible(false);
+            settingController.setKeys(textFields);
             new ui.SettingScreen();
         }
     }
 
     private void enterInputMode() {
+
         JDialog inputDialog = new JDialog(this, "Input Key", true);
         inputDialog.setLayout(new FlowLayout());
         inputDialog.setSize(300, 100);
@@ -151,6 +160,7 @@ public class KeySettingScreen extends JFrame {
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
                 String keyString = KeyEvent.getKeyText(keyCode);
+                //→ ↑ ← → ␣ -space bar ⇧ - shift ⇪ - kor/eng
 
                 // Disallowing certain keys
                 if (keyCode == KeyEvent.VK_ESCAPE || keyCode == KeyEvent.VK_ENTER ||

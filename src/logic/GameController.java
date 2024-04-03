@@ -6,6 +6,8 @@ import ui.*;
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.CharArrayReader;
+import java.util.ArrayList;
 
 // 게임의 전반적인 흐름을 제어하는 클래스
 public class GameController implements PauseScreenCallback {
@@ -68,42 +70,50 @@ public class GameController implements PauseScreenCallback {
     // 키보드 이벤트 처리
     // TODO: 3/24/24 : 효정이가 KeyListener 구현 하면 바꿀 예정
     private void setupKeyListener(JFrame frame) {
+        System.out.println("setupkeylistener");
 
-        // Create the PauseScreen instance once during initialization
+        SettingController settingController = new SettingController();
+        ArrayList<String> keyList = settingController.getKeys();
+
+        String changeShapeKey = keyList.get(0);
+        String leftKey = keyList.get(1);
+        String rightKey = keyList.get(2);
+        String goDownFasterKey = keyList.get(3);
+        String goDownAtOnceKey = keyList.get(4);
+        // ← 37  ↑ 38  → 39  ↓ 40  ␣ 32  `  192  - 45
 
         frame.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_LEFT:
-                        boardController.moveBlock(Direction.LEFT);
-                        break;
-                    case KeyEvent.VK_RIGHT:
-                        boardController.moveBlock(Direction.RIGHT);
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        boardController.moveBlock(Direction.DOWN);
-                        inGameScreen.updateBoard();
-                        break;
-                    case KeyEvent.VK_UP:
-                        boardController.moveBlock(Direction.UP);
-                        break;
-                    case KeyEvent.VK_SPACE:
-                        boardController.moveBlock(Direction.SPACE);
-                        inGameScreen.updateBoard();
-                        break;
-                    //esc 누르면 게임 중지, 한번 더 누르면 다시 실행
-                    case KeyEvent.VK_ESCAPE:
-                        timer.stop();
-                        PauseScreen pauseScreen = new PauseScreen(isItem);
-                        pauseScreen.setCallback(GameController.this); // Set the callback
-                        pauseScreen.setVisible(true); // Show the PauseScreen
-                        break;
+                int eventCode = e.getExtendedKeyCode();
+                String keyString = KeyEvent.getKeyText(eventCode);
+//                System.out.println("keyString: " + keyString);
+//                System.out.println("changeShapeKey: " + changeShapeKey + " leftKey: " + leftKey
+//                        + " rightKey: " + rightKey + " goDownFasterKey: " + goDownFasterKey + " goDownAtOnceKey: " + goDownAtOnceKey);
+                if (keyString.equals(changeShapeKey)) {
+                    boardController.moveBlock(Direction.UP);
+                } else if (keyString.equals(leftKey)) {
+                    boardController.moveBlock(Direction.LEFT);
+                } else if (keyString.equals(rightKey)) {
+                    boardController.moveBlock(Direction.RIGHT);
+                } else if (keyString.equals(goDownFasterKey)) {
+                    boardController.moveBlock(Direction.DOWN);
+                    inGameScreen.updateBoard();
+                } else if (keyString.equals(goDownAtOnceKey)) {
+                    boardController.moveBlock(Direction.SPACE);
+                    inGameScreen.updateBoard();
+                } else if (eventCode == KeyEvent.VK_ESCAPE) {
+                    timer.stop();
+                    PauseScreen pauseScreen = new PauseScreen(isItem);
+                    pauseScreen.setCallback(GameController.this); // Set the callback
+                    pauseScreen.setVisible(true); // Show the PauseScreen
                 }
+
                 inGameScreen.repaint();
             }
         });
     }
+
 
     private void startGame(boolean isItem) {
         currentSpeed = 1000;

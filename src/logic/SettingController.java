@@ -1,12 +1,13 @@
 package logic;
 
+import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 
-import static logic.SettingProperties.COLOR_BLIND_MODE;
-import static logic.SettingProperties.configPath;
+import static logic.SettingProperties.*;
 
 public class SettingController {
     private final Properties properties;
@@ -69,6 +70,16 @@ public class SettingController {
         return Integer.parseInt(properties.getProperty("difficulty", "1"));
     }
 
+    public ArrayList<String> getKeys() {
+            return KEYS;
+    }
+
+    public void setKeys(JTextField[] textField) {
+        System.out.println("SETKEYS");
+        for (int i = 0; i < textField.length; i++) {
+            KEYS.set(i, textField[i].getText());
+        }
+    }
     public void saveSettings(String key, String value) {
         properties.setProperty(key, value);
         try (FileOutputStream fos = new FileOutputStream(configPath)) {
