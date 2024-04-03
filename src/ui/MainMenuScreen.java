@@ -10,7 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import static component.Button.*;
+import static component.Button.createLogoBtnNext;
+import static component.Button.createLogoBtnUp;
 import static component.ScreenSize.setWidthHeight;
 import static java.lang.System.exit;
 
@@ -108,7 +109,7 @@ public class MainMenuScreen extends JFrame implements ActionListener {
         String command = e.getActionCommand();
         if (command.equals("play")) {
             setVisible(false);
-            new GameController();
+            new GameController(false);
             setVisible(false);
         } else if (command.equals("item")) {
             // TODO : 아이템 모드 게임 로직 구현
@@ -148,7 +149,7 @@ public class MainMenuScreen extends JFrame implements ActionListener {
     private void moveScreen() {
         setVisible(false);
         if (btnPlay.isFocusOwner()) {
-            new GameController();
+            new GameController(false);
         } else if (btnItem.isFocusOwner()) {
             // TODO : 아이템 모드 게임 로직 구현
             System.out.println("아이템 모드 플레이!");

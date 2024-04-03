@@ -6,11 +6,13 @@ import logic.SettingController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 import static component.Button.createBtn;
-
-import static component.ScreenSize.*;
+import static component.ScreenSize.setWidthHeight;
 
 public class RegisterScoreScreen extends JFrame implements ActionListener {
 
@@ -20,8 +22,13 @@ public class RegisterScoreScreen extends JFrame implements ActionListener {
     JTextField nameField;
     JButton submitButton;
     private int playerScore;
+    private boolean isItem;
 
-    public RegisterScoreScreen(int curr_score) {
+    public RegisterScoreScreen(int curr_score, boolean isItem) {
+
+        // 노말 모드 vs 아이템 모드
+        this.isItem = isItem;
+
         setTitle("Tetris - GameOver"); // 창의 제목 설정
         String screenSize = settingController.getScreenSize("screenSize", "small");
         switch (screenSize) {
@@ -112,11 +119,11 @@ public class RegisterScoreScreen extends JFrame implements ActionListener {
             String name = !nameField.getText().isEmpty() ? nameField.getText() : "익명";
 
             Score currScore = new Score(name, playerScore); // 이번 게임에 얻은 점수
-            scoreController.addScore(name, playerScore);
+            scoreController.addScore(name, playerScore, isItem);
             setVisible(false);
 
             // TODO : 등록한 점수에 대해서 강조 표시하는 스코어보드 출력
-            new ScoreboardScreen(currScore);
+            new ScoreboardScreen(currScore, isItem);
         }
     }
 
@@ -155,9 +162,9 @@ public class RegisterScoreScreen extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 String name = !nameField.getText().isEmpty() ? nameField.getText() : "익명";
                 Score currScore = new Score(name, playerScore); // 이번 게임에 얻은 점수
-                scoreController.addScore(name, playerScore);
+                scoreController.addScore(name, playerScore, isItem);
                 setVisible(false);
-                new ScoreboardScreen(currScore);
+                new ScoreboardScreen(currScore, isItem);
             }
         });
     }

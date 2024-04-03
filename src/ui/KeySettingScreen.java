@@ -1,20 +1,24 @@
 package src.ui;
 
+import logic.SettingController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 import static component.Button.createBtn;
 
-public class KeyConfigWindow extends JFrame {
-    private JLabel[] labels = new JLabel[4];
-    private JTextField[] textFields = new JTextField[4];
+public class KeySettingScreen extends JFrame {
+    private JLabel[] labels = new JLabel[5];
+    public JTextField[] textFields = new JTextField[5];
     private JButton btnInitialize = createBtn("Initialize", "initialize", this::actionPerformed);
     private JButton btnBack = createBtn("Back", "back", this::actionPerformed);
 
     private int focusedIndex = 0;
 
-    public KeyConfigWindow() {
+    private SettingController settingController = new SettingController();
+
+    public KeySettingScreen() {
         setTitle("Key Setting");
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -34,6 +38,9 @@ public class KeyConfigWindow extends JFrame {
                 labels[i].setText("Right Key");
                 textFields[i] = new JTextField("Press Enter to Set Key");
             } else if (i == 3) {
+                labels[i].setText("Go down faster");
+                textFields[i] = new JTextField("Press Enter to Set Key");
+            } else if (i == 4) {
                 labels[i].setText("Go down at once");
                 textFields[i] = new JTextField("Press Enter to Set Key");
             }
@@ -113,7 +120,7 @@ public class KeyConfigWindow extends JFrame {
 
         } else if (btnBack.isFocusOwner()) {
             setVisible(false);
-            new ui.StartScreen();
+            new ui.MainMenuScreen();
         }
     }
 
@@ -135,11 +142,13 @@ public class KeyConfigWindow extends JFrame {
 
         } else if (command.equals("back")) {
             setVisible(false);
+            settingController.setKeys(textFields);
             new ui.SettingScreen();
         }
     }
 
     private void enterInputMode() {
+
         JDialog inputDialog = new JDialog(this, "Input Key", true);
         inputDialog.setLayout(new FlowLayout());
         inputDialog.setSize(300, 100);
@@ -151,12 +160,13 @@ public class KeyConfigWindow extends JFrame {
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
                 String keyString = KeyEvent.getKeyText(keyCode);
+                //→ ↑ ← → ␣ -space bar ⇧ - shift ⇪ - kor/eng
 
                 // Disallowing certain keys
                 if (keyCode == KeyEvent.VK_ESCAPE || keyCode == KeyEvent.VK_ENTER ||
                         keyCode == KeyEvent.VK_WINDOWS || keyCode == KeyEvent.VK_CONTROL ||
                         keyCode == KeyEvent.VK_META || keyCode == KeyEvent.VK_ALT) {
-                    JOptionPane.showMessageDialog(KeyConfigWindow.this, "This key is not allowed to be assigned.", "Invalid Key", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(KeySettingScreen.this, "This key is not allowed to be assigned.", "Invalid Key", JOptionPane.WARNING_MESSAGE);
                     inputDialog.dispose();
                     return;
                 }
@@ -171,7 +181,7 @@ public class KeyConfigWindow extends JFrame {
                 if (!keyAssigned) {
                     textFields[focusedIndex].setText(keyString);
                 } else {
-                    JOptionPane.showMessageDialog(KeyConfigWindow.this, "This key is already assigned to another section.", "Key Already Assigned", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(KeySettingScreen.this, "This key is already assigned to another section.", "Key Already Assigned", JOptionPane.WARNING_MESSAGE);
                 }
                 inputDialog.dispose();
             }
@@ -181,6 +191,6 @@ public class KeyConfigWindow extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new KeyConfigWindow());
+        SwingUtilities.invokeLater(() -> new KeySettingScreen());
     }
 }

@@ -1,6 +1,5 @@
 package logic;
 
-import model.BlockType;
 import model.Direction;
 import model.NullBlock;
 
@@ -8,6 +7,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class BoardController {
+    SettingController settingController = new SettingController();
+    RWSelection rwSelection = new RWSelection(settingController.getDifficulty());
     // 게임 보드
     final private Board grid;
     // 게임 보드의 너비, 높이
@@ -15,11 +16,11 @@ public class BoardController {
     final private int HEIGHT;
     // 현재 블록, 다음 블록
     private Block currentBlock;
-    private Block nextBlock = Block.getBlock(BlockType.getRandomBlockType());
+    private Block nextBlock = rwSelection.selectBlock();
     // stopCount: 조작이 없으면 1씩 증가,
     private int stopCount = 0;
-    // lmitCount: 블록이 바닥에 닿은 순간 1씩 증가, 5이상이면 블록을 고정시킴.
-    // 블록이 아래로 내려가면 0으로 초기화
+    // limitCount: 블록이 바닥에 닿은 순간 1씩 증가, 5 초과시 블록을 고정.
+    // 블록이 moveDown => 0으로 초기화
     private int limitCount = 0;
 
     private boolean canPlaceBlock;
@@ -142,12 +143,12 @@ public class BoardController {
     }
 
 
-    // InGameScreen에서 다음 블록 띄우기 위해서 추가
+    // InGameScreen 에서 다음 블록 띄우기 위해서 추가
     public Block getNextBlock() {
         return nextBlock;
     }
 
-    // InGameScreen에서 게임 보드 상태를 가져오기 위해서 추가
+    // InGameScreen 에서 게임 보드 상태를 가져오기 위해서 추가
     public int[][] getBoard() {
         return grid.getBoard();
     }
@@ -157,7 +158,7 @@ public class BoardController {
     public void placeNewBlock() {
         placedBlockCount++;
         this.currentBlock = this.nextBlock;
-        this.nextBlock = Block.getBlock(BlockType.getRandomBlockType());
+        this.nextBlock = rwSelection.selectBlock();
         if(collisionCheck(6, 2, currentBlock)){
             checkSpeedUp();
             x = 6; y = 2;

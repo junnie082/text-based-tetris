@@ -25,7 +25,7 @@ public class GameOverScreen extends JFrame implements ActionListener {
     JButton btnMenu;
     JButton btnExit;
 
-    public GameOverScreen(int score) {
+    public GameOverScreen(int score, boolean isItem) {
         setTitle("Tetris - GameOver");
         String screenSize = settingController.getScreenSize("screenSize", "small");
         switch (screenSize) {
@@ -53,7 +53,7 @@ public class GameOverScreen extends JFrame implements ActionListener {
         add(Box.createVerticalStrut(10));
 
         // 스코어 보드 표시
-        JPanel scorePanel = createScorePanel();
+        JPanel scorePanel = createScorePanel(isItem);
         add(scorePanel, BorderLayout.CENTER);
 
         // 하단 패널에 Setting, Ranking, Exit 버튼 추가
@@ -88,7 +88,7 @@ public class GameOverScreen extends JFrame implements ActionListener {
         btnExit.addKeyListener(new MyKeyListener());
     }
 
-    private JPanel createScorePanel() {
+    private JPanel createScorePanel(boolean isItem) {
 
         JPanel scorePanel = new JPanel();
         scorePanel.setLayout(new GridLayout(11, 1)); // 제목 행(1칸) + 10개의 스코어(10칸)
@@ -98,7 +98,7 @@ public class GameOverScreen extends JFrame implements ActionListener {
         scorePanel.add(title);
 
         // 예시 데이터 추가
-        List<Score> topScores = scoreController.getScores();
+        List<Score> topScores = scoreController.getScores(isItem);
 
         // 상위 10개 스코어 표시
         for (int i = 0; i < topScores.size(); i++) {
@@ -173,7 +173,7 @@ public class GameOverScreen extends JFrame implements ActionListener {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new GameOverScreen(100);
+                new GameOverScreen(100, false);
             }
         });
     }
