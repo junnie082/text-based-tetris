@@ -87,9 +87,9 @@ public class GameController implements PauseScreenCallback {
             public void keyPressed(KeyEvent e) {
                 int eventCode = e.getExtendedKeyCode();
                 String keyString = KeyEvent.getKeyText(eventCode);
-//                System.out.println("keyString: " + keyString);
-//                System.out.println("changeShapeKey: " + changeShapeKey + " leftKey: " + leftKey
-//                        + " rightKey: " + rightKey + " goDownFasterKey: " + goDownFasterKey + " goDownAtOnceKey: " + goDownAtOnceKey);
+                System.out.println("keyString: " + keyString);
+                System.out.println("changeShapeKey: " + changeShapeKey + " leftKey: " + leftKey
+                        + " rightKey: " + rightKey + " goDownFasterKey: " + goDownFasterKey + " goDownAtOnceKey: " + goDownAtOnceKey);
                 if (keyString.equals(changeShapeKey)) {
                     boardController.moveBlock(Direction.UP);
                 } else if (keyString.equals(leftKey)) {
