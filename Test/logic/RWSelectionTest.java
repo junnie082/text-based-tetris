@@ -21,7 +21,7 @@ class RWSelectionTest {
         int repetitions = 100000;
         HashMap<Integer, Integer> counts = new HashMap<>();
 
-        // 1,000번 선택 반복
+        // 100000번 선택 반복
         for (int i = 0; i < repetitions; i++) {
             int selectedIndex = selection.select();
             counts.put(selectedIndex, counts.getOrDefault(selectedIndex, 0) + 1);
@@ -51,7 +51,7 @@ class RWSelectionTest {
         int repetitions = 100000;
         HashMap<Integer, Integer> counts = new HashMap<>();
 
-        // 1,000번 선택 반복
+        // 100000번 선택 반복
         for (int i = 0; i < repetitions; i++) {
             int selectedIndex = selection.select();
             counts.put(selectedIndex, counts.getOrDefault(selectedIndex, 0) + 1);
@@ -81,7 +81,7 @@ class RWSelectionTest {
         int repetitions = 100000;
         HashMap<Integer, Integer> counts = new HashMap<>();
 
-        // 1,000번 선택 반복
+        // 100000번 선택 반복
         for (int i = 0; i < repetitions; i++) {
             int selectedIndex = selection.select();
             counts.put(selectedIndex, counts.getOrDefault(selectedIndex, 0) + 1);
@@ -111,7 +111,7 @@ class RWSelectionTest {
         int repetitions = 100000;
         HashMap<Integer, Integer> counts = new HashMap<>();
 
-        // 1,000번 선택 반복
+        // 100000번 선택 반복
         for (int i = 0; i < repetitions; i++) {
             int selectedIndex = selection.select();
             counts.put(selectedIndex, counts.getOrDefault(selectedIndex, 0) + 1);

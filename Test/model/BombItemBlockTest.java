@@ -14,9 +14,9 @@ class BombItemBlockTest {
         BombItemBlock bombBlock = new BombItemBlock();
         int[][] expectedShape = {
                 {0, 0, 0, 0},
+                {0, 0, 12, 0},
                 {0, 11, 11, 0},
                 {0, 11, 11, 0},
-                {0, 0, 0, 0}
         };
         Color[] expectedColors = {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE};
 

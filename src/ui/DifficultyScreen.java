@@ -53,11 +53,11 @@ public class DifficultyScreen extends JFrame implements ActionListener {
 
         // 버튼
         JPanel topPanel = new JPanel();
-        btnEasy = createLogoBtnUp("Easy", "easy", this, screenSize,"src/image/easy_logo.png");
+        btnEasy = createLogoBtnUp("Easy", "easy", this, screenSize, "src/image/easy_logo.png");
         btnEasy.setPreferredSize((new Dimension(btnSize, btnSize)));
         btnNormal = createLogoBtnUp("Normal", "normal", this, screenSize, "src/image/normal_logo.png");
         btnNormal.setPreferredSize((new Dimension(btnSize, btnSize)));
-        btnHard = createLogoBtnUp("Hard", "hard", this, screenSize,"src/image/hard_logo.png");
+        btnHard = createLogoBtnUp("Hard", "hard", this, screenSize, "src/image/hard_logo.png");
         btnHard.setPreferredSize((new Dimension(btnSize, btnSize)));
 
         btnEasy.addKeyListener(new MyKeyListener());
@@ -82,28 +82,30 @@ public class DifficultyScreen extends JFrame implements ActionListener {
         add(bottomPanel, BorderLayout.SOUTH);
 
         pack();
+        setLocationRelativeTo(null); // 위치를 화면 중앙으로 설정
         setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        if (command.equals("easy")) {
-            settingController.saveSettings("difficulty", "0");
-            setVisible(false);
-            new GameController(isItem);
-        } else if (command.equals("normal")) {
-            settingController.saveSettings("difficulty", "1");
-            setVisible(false);
-            new GameController(isItem);
-        } else if (command.equals("hard")) {
-            settingController.saveSettings("difficulty", "2");
-            setVisible(false);
-            new GameController(isItem);
-        } else if (command.equals("menu")) {
-            // 게임 모드 선택 화면으로 돌아가기
-            setVisible(false);
-            new MainMenuScreen();
+        setVisible(false);
+        switch (command) {
+            case "easy" -> {
+                settingController.saveSettings("difficulty", "0");
+                new GameController(isItem);
+            }
+            case "normal" -> {
+                settingController.saveSettings("difficulty", "1");
+                new GameController(isItem);
+            }
+            case "hard" -> {
+                settingController.saveSettings("difficulty", "2");
+                new GameController(isItem);
+            }
+            case "menu" -> {
+                new MainMenuScreen();
+            }
         }
     }
 
@@ -159,6 +161,7 @@ public class DifficultyScreen extends JFrame implements ActionListener {
             btnEasy.requestFocusInWindow();
         }
     }
+
     private void focusUpButton() {
         if (btnMenu.isFocusOwner()) {
             btnNormal.requestFocusInWindow();

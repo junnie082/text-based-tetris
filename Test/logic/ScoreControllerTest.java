@@ -19,39 +19,44 @@ class ScoreControllerTest {
     @Test
     void addScore() {
         // Add a score to the normal scores
-        scoreController.addScore("Player1", 100, false);
+        Score score1 = new Score("Player1", 100, "Easy");
+        scoreController.addScore(score1, false);
 
         // Ensure the score was added to the normal scores
         List<Score> normalScores = scoreController.getScores(false);
         assertFalse(normalScores.isEmpty(), "Normal scores should not be empty after adding a score.");
-        assertEquals("Player1:100", normalScores.get(0).toString(), "Added score should match the input.");
+        assertEquals("Player1:Easy:100", normalScores.get(0).toString(), "Added score should match the input.");
 
         // Add a score to the item scores
-        scoreController.addScore("Player2", 200, true);
+        Score score2 = new Score("Player1", 100, "Easy");
+        scoreController.addScore(score2, true);
 
         // Ensure the score was added to the item scores
         List<Score> itemScores = scoreController.getScores(true);
         assertFalse(itemScores.isEmpty(), "Item scores should not be empty after adding a score.");
-        assertEquals("Player2:200", itemScores.get(0).toString(), "Added score should match the input.");
+        assertEquals("Player1:Easy:100", itemScores.get(0).toString(), "Added score should match the input.");
     }
 
     @Test
     void addScore_largerThen10(){
         // Add scores to create a Top 10 list
         for (int i = 0; i < 10; i++) {
-            scoreController.addScore("Player" + (i + 1), i * 10, false);
+            Score score = new Score("Player" + (i + 1), i * 10, "Easy");
+            scoreController.addScore(score, false);
         }
 
         // Add a score that would be in the Top 10
-        scoreController.addScore("Player11", 100, false);
+        Score score11 = new Score("Player11", 100, "Easy");
+        scoreController.addScore(score11, false);
 
         // Ensure the score was added to the normal scores
         List<Score> normalScores = scoreController.getScores(false);
         assertEquals(10, normalScores.size(), "Normal scores should have 10 items.");
-        assertEquals("Player11:100", normalScores.get(0).toString(), "Added score should be at the top.");
+        assertEquals("Player11:Easy:100", normalScores.get(0).toString(), "Added score should be at the top.");
 
         // Add a score that would not be in the Top 10
-        scoreController.addScore("Player12", 5, false);
+        Score score12 = new Score("Player12", 5, "Easy");
+        scoreController.addScore(score12, false);
 
         // Ensure the score was not added to the normal scores
         assertEquals(10, normalScores.size(), "Normal scores should still have 10 items.");
@@ -60,8 +65,10 @@ class ScoreControllerTest {
     @Test
     void resetScores() {
         // Add some scores
-        scoreController.addScore("Player1", 100, false);
-        scoreController.addScore("Player2", 200, true);
+        Score score1 = new Score("Player1", 100, "Easy");
+        Score score2 = new Score("Player1", 200, "Easy");
+        scoreController.addScore(score1, false);
+        scoreController.addScore(score2, true);
 
         // Reset the normal scores and ensure it's empty
         scoreController.resetScores(false);
@@ -77,8 +84,10 @@ class ScoreControllerTest {
     @Test
     void getScores() {
         // Add scores to both normal and item lists
-        scoreController.addScore("Player1", 100, false);
-        scoreController.addScore("Player2", 200, true);
+        Score score1 = new Score("Player1", 100, "Easy");
+        Score score2 = new Score("Player1", 200, "Easy");
+        scoreController.addScore(score1, false);
+        scoreController.addScore(score2, true);
 
         // Get the scores and check if they are correct
         List<Score> normalScores = scoreController.getScores(false);
@@ -92,7 +101,8 @@ class ScoreControllerTest {
     void isScoreInTop10() {
         // Add scores to create a Top 10 list
         for (int i = 0; i < 10; i++) {
-            scoreController.addScore("Player" + (i + 1), i * 10, false);
+            Score score = new Score("Player" + (i + 1), i * 10, "Easy");
+            scoreController.addScore(score, false);
         }
 
         // Check if a score would be in the Top 10

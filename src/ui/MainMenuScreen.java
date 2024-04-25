@@ -104,7 +104,7 @@ public class MainMenuScreen extends JFrame implements ActionListener {
         centerPanel.add(btnPlay);
 
         // btnItem 버튼 추가
-        btnItem = createLogoBtnNext("ITEM", "item", this, screenSize,"src/image/mario.png");
+        btnItem = createLogoBtnNext("ITEM", "item", this, screenSize, "src/image/mario.png");
         btnItem.setPreferredSize(new Dimension(playWidth, playHeight));
         btnItem.setFocusable(true);
         centerPanel.add(btnItem);
@@ -116,17 +116,17 @@ public class MainMenuScreen extends JFrame implements ActionListener {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout()); // 버튼들이 나란하게 배치되도록 FlowLayout 사용
 
-        btnSetting = createLogoBtnUp("Setting", "setting", this, screenSize,"src/image/setting_logo.png");
+        btnSetting = createLogoBtnUp("Setting", "setting", this, screenSize, "src/image/setting_logo.png");
         btnSetting.setPreferredSize((new Dimension(menuWidth, menuHeight))); // (100, 100) & (170, 140) & (270, 200)
         btnSetting.setFocusable(true);
         bottomPanel.add(btnSetting);
 
-        btnRanking = createLogoBtnUp("Rank", "ranking", this, screenSize,"src/image/ranking.png");
+        btnRanking = createLogoBtnUp("Rank", "ranking", this, screenSize, "src/image/ranking.png");
         btnRanking.setPreferredSize((new Dimension(menuWidth, menuHeight)));
         btnRanking.setFocusable(true);
         bottomPanel.add(btnRanking);
 
-        btnExit = createLogoBtnUp("Exit", "exit", this, screenSize,"src/image/door.png");
+        btnExit = createLogoBtnUp("Exit", "exit", this, screenSize, "src/image/door.png");
         btnExit.setPreferredSize((new Dimension(menuWidth, menuHeight)));
         btnExit.setFocusable(true);
         bottomPanel.add(btnExit);
@@ -149,25 +149,23 @@ public class MainMenuScreen extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        if (command.equals("play")) {
-            // TODO : 난이도 선택 화면으로 넘어가서 GameController 실행
-            setVisible(false);
-            new DifficultyScreen(false);
-            setLocationRelativeTo(null); // Centered window
-        } else if (command.equals("item")) {
-            // TODO : 난이도 선택 화면으로 넘어가서 GameController 실행
-            new DifficultyScreen(true);
-            setLocationRelativeTo(null); // Centered window
-        } else if (command.equals("setting")) {
-            new SettingScreen();
-            setLocationRelativeTo(null); // Centered window
-            setVisible(false);
-        } else if (command.equals("ranking")) {
-            new ScoreboardScreen();
-            setLocationRelativeTo(null); // Centered window
-            setVisible(false);
-        } else if (command.equals("exit")) {
-            System.exit(0);
+        setVisible(false);
+        switch (command) {
+            case "play" -> {
+                // TODO : 난이도 선택 화면으로 넘어가서 GameController 실행
+                new DifficultyScreen(false);
+            }
+            case "item" -> {
+                // TODO : 난이도 선택 화면으로 넘어가서 GameController 실행
+                new DifficultyScreen(true);
+            }
+            case "setting" -> {
+                new SettingScreen();
+            }
+            case "ranking" -> {
+                new ScoreboardScreen();
+            }
+            case "exit" -> System.exit(0);
         }
     }
 
@@ -186,8 +184,6 @@ public class MainMenuScreen extends JFrame implements ActionListener {
             } else if (keyCode == KeyEvent.VK_ENTER) {
                 moveScreen();
             }
-
-            System.out.println("KeyPressed");
         }
     }
 
@@ -195,17 +191,14 @@ public class MainMenuScreen extends JFrame implements ActionListener {
     private void moveScreen() {
         setVisible(false);
         if (btnPlay.isFocusOwner()) {
-            // TODO : 난이도 선택 화면으로 넘어가서 GameController 실행
             new DifficultyScreen(false);
         } else if (btnItem.isFocusOwner()) {
-            // TODO : 난이도 선택 화면으로 넘어가서 GameController 실행
             new DifficultyScreen(true);
         } else if (btnSetting.isFocusOwner()) {
             new SettingScreen();
         } else if (btnRanking.isFocusOwner()) {
             new ScoreboardScreen();
-        }
-        else if (btnExit.isFocusOwner()) {
+        } else if (btnExit.isFocusOwner()) {
             exit(0);
         }
     }

@@ -1,68 +1,83 @@
 package ui;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PauseScreenTest {
 
-    @Test
-    void setCallback() {
-        // Given
-        PauseScreen pauseScreen = new PauseScreen(false);
-        PauseScreenCallback callback = new PauseScreenCallback() {
-            @Override
-            public void onResumeGame() {
-                // Test onResumeGame behavior
-                assertTrue(true); // Placeholder assertion
-            }
+    private PauseScreen pauseScreen;
+    private Robot robot;
+    private boolean gameResumed;
+    private boolean frameHidden;
 
-            @Override
-            public void onHideFrame() {
-                // Test onHideFrame behavior
-                assertTrue(true); // Placeholder assertion
-            }
-        };
+    @BeforeEach
+    void setUp() throws AWTException {
+        pauseScreen = new PauseScreen(false);
+        robot = new Robot();
+        robot.setAutoDelay(100);
 
-        // When
-        pauseScreen.setCallback(callback);
-
-        // Then
-        assertNotNull(pauseScreen.callback);
-    }
-
-    @Test
-    void actionPerformed() {
-        // Given
-        PauseScreen pauseScreen = new PauseScreen(false);
         pauseScreen.setCallback(new PauseScreenCallback() {
             @Override
             public void onResumeGame() {
-                // Test onResumeGame behavior
-                assertTrue(true); // Placeholder assertion
+                gameResumed = true;
             }
 
             @Override
             public void onHideFrame() {
-                // Test onHideFrame behavior
-                assertTrue(true); // Placeholder assertion
+                frameHidden = true;
             }
         });
-
-        // When
-        // Simulate action event for "back" button
-        pauseScreen.actionPerformed(createActionEvent("back"));
-
-        // Then
-        // Test that onResumeGame method was called
-        // Test that setVisible method was called with false
-        // Test other expected behaviors
+        pauseScreen.setVisible(true);
     }
 
-    // Helper method to create ActionEvent for testing
-    private ActionEvent createActionEvent(String command) {
-        return new ActionEvent(new Object(), ActionEvent.ACTION_PERFORMED, command);
+    @Test
+    void testActions() {
+        pauseScreen.btnBack.doClick();
+        assertTrue(gameResumed, "Game should resume on 'Back' button click");
+
+        pauseScreen.btnReplay.doClick();
+        assertTrue(frameHidden, "'Frame should be hidden on 'Replay' button click");
+
+        pauseScreen.btnMainMenu.doClick();
+        assertTrue(frameHidden, "'Frame should be hidden on 'MainMenu' button click");
+    }
+
+    @Test
+    void testFocusMovement() throws  InterruptedException {
+        pauseScreen.btnBack.requestFocus();
+        robot.keyPress(KeyEvent.VK_RIGHT);
+        robot.keyRelease(KeyEvent.VK_RIGHT);
+        assertTrue(pauseScreen.btnReplay.isFocusOwner(), "Focus should move to the Replay button");
+
+        robot.setAutoDelay(100);
+        robot.keyPress(KeyEvent.VK_RIGHT);
+        robot.keyRelease(KeyEvent.VK_RIGHT);
+        assertTrue(pauseScreen.btnMainMenu.isFocusOwner(), "Focus should move to the Menu button");
+
+        robot.setAutoDelay(100);
+        robot.keyPress(KeyEvent.VK_RIGHT);
+        robot.keyRelease(KeyEvent.VK_RIGHT);
+        assertTrue(pauseScreen.btnQuit.isFocusOwner(), "Focus should move to the Quit button");
+
+        robot.setAutoDelay(100);
+        robot.keyPress(KeyEvent.VK_LEFT);
+        robot.keyRelease(KeyEvent.VK_LEFT);
+        assertTrue(pauseScreen.btnMainMenu.isFocusOwner(), "Focus should move to the Menu button");
+
+        robot.setAutoDelay(100);
+        robot.keyPress(KeyEvent.VK_LEFT);
+        robot.keyRelease(KeyEvent.VK_LEFT);
+        assertTrue(pauseScreen.btnReplay.isFocusOwner(), "Focus should move to the Replay button");
+
+        robot.setAutoDelay(100);
+        robot.keyPress(KeyEvent.VK_LEFT);
+        robot.keyRelease(KeyEvent.VK_LEFT);
+        assertTrue(pauseScreen.btnBack.isFocusOwner(), "Focus should move to the Back to the Game button");
     }
 }

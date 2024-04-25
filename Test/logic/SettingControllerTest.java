@@ -151,7 +151,7 @@ class SettingControllerTest {
     @Test
     void getKeyShape() {
         String[] keyShapes = settingController.getKeyShape();
-        assertEquals("Up", keyShapes[0], "Default rotate shape should be UP arrow.");
+        assertEquals("↑", keyShapes[0], "Default rotate shape should be UP arrow.");
     }
 
     @Test

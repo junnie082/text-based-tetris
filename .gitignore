@@ -112,7 +112,7 @@ replay_pid*
 .idea/misc.xml
 .idea/vcs.xml
 .idea/workspace.xml
-.text-based-tetris.iml
+text-based-tetris.iml
 
-./ranking.txt
-./config.properties
+ranking.txt
+config.properties

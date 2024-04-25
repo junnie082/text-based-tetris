@@ -24,6 +24,9 @@ public class RegisterScoreScreen extends JFrame implements ActionListener {
     private int playerScore;
     private boolean isItem;
 
+    private int fontSizeTitle;
+    private int fontSizeScore;
+
     public RegisterScoreScreen(int curr_score, boolean isItem) {
 
         // 노말 모드 vs 아이템 모드
@@ -33,13 +36,19 @@ public class RegisterScoreScreen extends JFrame implements ActionListener {
         String screenSize = settingController.getScreenSize("screenSize", "small");
         switch (screenSize) {
             case "small":
-                setWidthHeight(390, 420, this);
+                setWidthHeight(400, 400, this);
+                fontSizeTitle = 30;
+                fontSizeScore = 20;
                 break;
             case "big":
-                setWidthHeight(910, 940, this);
+                setWidthHeight(600, 600, this);
+                fontSizeTitle = 50;
+                fontSizeScore = 30;
                 break;
             default:
-                setWidthHeight(650, 680, this);
+                setWidthHeight(500, 500, this);
+                fontSizeTitle = 40;
+                fontSizeScore = 25;
                 break;
         }
         setLocationRelativeTo(null); // 창을 화면 가운데에 위치시킴
@@ -51,15 +60,15 @@ public class RegisterScoreScreen extends JFrame implements ActionListener {
 
         // 상단 : ScoreBoard
         JPanel scorePanel = new JPanel();
-        scorePanel.setLayout(new GridLayout(11, 1)); // 제목 행(1칸) + 10개의 스코어(10칸)
+        scorePanel.setLayout(new GridLayout(5, 1)); // 제목 행(1칸) + 10개의 스코어(10칸)
 
         JLabel title = new JLabel("New Top10 Score!!", SwingConstants.CENTER); // 가운데 정렬
-        title.setFont(new Font(title.getFont().getName(), Font.BOLD, 24)); // 제목의 폰트 설정
+        title.setFont(new Font(title.getFont().getName(), Font.BOLD, fontSizeTitle)); // 제목의 폰트 설정
         scorePanel.add(title);
 
         playerScore = curr_score;
         JLabel score = new JLabel("Your score : " + curr_score, SwingConstants.CENTER);
-        title.setFont(new Font(title.getFont().getName(), Font.BOLD, 18)); // 제목의 폰트 설정
+        score.setFont(new Font(title.getFont().getName(), Font.BOLD, fontSizeScore)); // 제목의 폰트 설정
         scorePanel.add(score);
 
         mainPanel.add(scorePanel);
@@ -70,7 +79,7 @@ public class RegisterScoreScreen extends JFrame implements ActionListener {
         // 중앙 : 이름 입력 칸 + 제출 버튼
         JPanel inputPanel = new JPanel();
 
-        nameField = new JTextField("Please register playerName", 20);
+        nameField = new JTextField(30);
         nameField.setHorizontalAlignment(JTextField.CENTER);
         nameField.setForeground(Color.GRAY);
         inputPanel.add(nameField);
@@ -89,7 +98,6 @@ public class RegisterScoreScreen extends JFrame implements ActionListener {
             public void focusLost(FocusEvent e) {
                 if (nameField.getText().isEmpty()) {
                     nameField.setForeground(Color.GRAY);
-                    nameField.setText("Please register playerName");
                 }
             }
         });
@@ -108,6 +116,7 @@ public class RegisterScoreScreen extends JFrame implements ActionListener {
         // 키 바인딩 설정
         setKeyBindings();
 
+        setLocationRelativeTo(null); // Centered window
         setVisible(true);
     }
 
@@ -117,14 +126,24 @@ public class RegisterScoreScreen extends JFrame implements ActionListener {
         setVisible(false);
         if (command.equals("submit")) {
             String name = !nameField.getText().isEmpty() ? nameField.getText() : "익명";
+            String difficulty = setDifficultyFromCode(settingController.getDifficulty());
 
-            Score currScore = new Score(name, playerScore); // 이번 게임에 얻은 점수
-            scoreController.addScore(name, playerScore, isItem);
+
+            Score currScore = new Score(name, playerScore, difficulty); // 이번 게임에 얻은 점수
+            scoreController.addScore(currScore, isItem);
             setVisible(false);
 
             // TODO : 등록한 점수에 대해서 강조 표시하는 스코어보드 출력
             new ScoreboardScreen(currScore, isItem);
         }
+    }
+
+    private String setDifficultyFromCode(int difficultyCode) {
+        return switch (difficultyCode) {
+            case 0 -> "Easy";
+            case 2 -> "Hard";
+            default -> "Normal";
+        };
     }
 
     private void setKeyBindings() {
@@ -161,12 +180,16 @@ public class RegisterScoreScreen extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String name = !nameField.getText().isEmpty() ? nameField.getText() : "익명";
-                Score currScore = new Score(name, playerScore); // 이번 게임에 얻은 점수
-                scoreController.addScore(name, playerScore, isItem);
+                String difficulty = setDifficultyFromCode(settingController.getDifficulty());
+                Score currScore = new Score(name, playerScore, difficulty); // 이번 게임에 얻은 점수
+                scoreController.addScore(currScore, isItem);
                 setVisible(false);
                 new ScoreboardScreen(currScore, isItem);
             }
         });
     }
 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new RegisterScoreScreen(100, false));
+    }
 }

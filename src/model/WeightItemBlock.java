@@ -11,7 +11,7 @@ public class WeightItemBlock extends Block {
                 {0, 9, 9, 0},
                 {9, 9, 9, 9},
                 {9, 9, 9, 9},
-        }, new Color[]{Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE}); // 색상은 예시, 실제 게임에 맞게 조정
+        }, new Color[]{Color.DARK_GRAY, Color.DARK_GRAY, Color.DARK_GRAY, Color.DARK_GRAY}); // 색상은 예시, 실제 게임에 맞게 조정
     }
 
     @Override

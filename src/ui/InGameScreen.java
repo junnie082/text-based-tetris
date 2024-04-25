@@ -5,6 +5,7 @@ import logic.Block;
 import logic.BoardController;
 import logic.SettingController;
 import model.BlockType;
+import model.WeightItemBlock;
 
 import javax.swing.*;
 import java.awt.*;
@@ -212,17 +213,38 @@ public class InGameScreen extends JPanel {
                 charWidth = metrics.stringWidth("ㅇ");
                 g.drawString("ㅇ", x + (cellSize - charWidth) / 2 + (cellSize - charWidth) % 2, y + (cellSize - charHeight) / 3 + (cellSize - charHeight) % 2 + metrics.getAscent());
                 break;
-            case 10:
+            case 10: // 물 아이템
                 g.setColor(Color.BLUE);
-                charWidth = metrics.stringWidth("~");
-                g.drawString("~", x + (cellSize - charWidth) / 2 + (cellSize - charWidth) % 2, y + (cellSize - charHeight) / 3 + (cellSize - charHeight) % 2 + metrics.getAscent());
+                charWidth = metrics.stringWidth("᯾");
+                g.drawString("᯾", x + (cellSize - charWidth) / 2 + (cellSize - charWidth) % 2, y + (cellSize - charHeight) / 3 + (cellSize - charHeight) % 2 + metrics.getAscent());
                 break;
             case 11: // 폭탄 아이템
+                g.setColor(Color.RED);
+                charWidth = metrics.stringWidth("◎");
+                g.drawString("◎", x + (cellSize - charWidth) / 2 + (cellSize - charWidth) % 2, y + (cellSize - charHeight) / 3 + (cellSize - charHeight) % 2 + metrics.getAscent());
+                break;
+            case 12: // 폭탄 아이템 외형(꽁다리)
+                g.setColor(Color.YELLOW);
+                charWidth = metrics.stringWidth("☄");
+                g.drawString("☄", x + (cellSize - charWidth) / 2 + (cellSize - charWidth) % 2, y + (cellSize - charHeight) / 3 + (cellSize - charHeight) % 2 + metrics.getAscent());
+                break;
+            case 13: // 폭탄 터지는 이벤트
+                g.setColor(Color.YELLOW);
+                charWidth = metrics.stringWidth("✸");
+                g.drawString("✸", x + (cellSize - charWidth) / 2 + (cellSize - charWidth) % 2, y + (cellSize - charHeight) / 3 + (cellSize - charHeight) % 2 + metrics.getAscent());
+                break;
+            case 14: // 확장 아이템(확장 전)
                 g.setColor(Color.WHITE);
-                charWidth = metrics.stringWidth("B");
-                g.drawString("B", x + (cellSize - charWidth) / 2 + (cellSize - charWidth) % 2, y + (cellSize - charHeight) / 3 + (cellSize - charHeight) % 2 + metrics.getAscent());
-            case -2: // 한 줄이 꽉 차서 지워지기 전
+                charWidth = metrics.stringWidth("✷");
+                g.drawString("✵", x + (cellSize - charWidth) / 2 + (cellSize - charWidth) % 2, y + (cellSize - charHeight) / 3 + (cellSize - charHeight) % 2 + metrics.getAscent());
+                break;
+            case 15: // 확장 아이템(확장 후)
                 g.setColor(Color.CYAN);
+                charWidth = metrics.stringWidth("✷");
+                g.drawString("✵", x + (cellSize - charWidth) / 2 + (cellSize - charWidth) % 2, y + (cellSize - charHeight) / 3 + (cellSize - charHeight) % 2 + metrics.getAscent());
+                break;
+            case -2: // 한 줄이 꽉 차서 지워지기 전
+                g.setColor(Color.YELLOW);
                 g.fillRect(x, y, cellSize, cellSize);
                 break;
         }

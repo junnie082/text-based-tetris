@@ -19,7 +19,6 @@ public class ScoreController {
         loadScores(itemFilePath, itemScores); // item 점수 로드
     }
 
-    // 파일로부터 점수를 불러오는 메소드, filePath와 scores 리스트를 매개변수로 받습니다.
     private void loadScores(String filePath, List<Score> scores) {
         File file = new File(filePath);
 
@@ -36,14 +35,26 @@ public class ScoreController {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(":");
-                if (parts.length == 2) {
-                    scores.add(new Score(parts[0], Integer.parseInt(parts[1])));
+                // 현재 파일 포맷에 맞게 수정: playerName:difficulty:score
+                if (parts.length == 3) {
+                    String playerName = parts[0];
+                    String difficulty = parts[1];
+                    int score = Integer.parseInt(parts[2]);
+                    scores.add(new Score(playerName, score, difficulty));
                 }
             }
             Collections.sort(scores); // 점수를 내림차순으로 정렬합니다.
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String setDifficultyFromCode(int difficultyCode) {
+        return switch (difficultyCode) {
+            case 0 -> "Easy";
+            case 2 -> "Hard";
+            default -> "Normal";
+        };
     }
 
     // 점수를 파일에 저장, filePath와 scores 리스트를 매개변수로 받습니다.
@@ -58,9 +69,9 @@ public class ScoreController {
     }
 
     // 새로운 점수를 추가, 점수 유형에 따라 다른 리스트에 추가하도록 메소드를 수정합니다.
-    public void addScore(String playerName, int score, boolean isItem) {
+    public void addScore(Score currScore, boolean isItem) {
         List<Score> targetScores = isItem ? itemScores : normalScores;
-        targetScores.add(new Score(playerName, score));
+        targetScores.add(currScore);
         Collections.sort(targetScores);
 
         while (targetScores.size() > 10) {

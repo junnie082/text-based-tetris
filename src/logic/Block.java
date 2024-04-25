@@ -29,17 +29,6 @@ public abstract class Block {
         return shape[y][x];
     }
 
-    public int getBlockType() {
-        for (int i = 0; i < shape.length; i++) {
-            for (int j = 0; j < shape[i].length; j++) {
-                if (shape[i][j] > 0) {
-                    return shape[i][j];
-                }
-            }
-        }
-        return 0;
-    }
-
     public int[][] getShape() {
         return shape;
     }
@@ -119,6 +108,9 @@ public abstract class Block {
             case ZBlock -> new ZBlock();
             case NullBlock -> new NullBlock();
             case WeightItemBlock -> new WeightItemBlock();
+            case BombItemBlock -> new BombItemBlock();
+            case ExtensionItemBlock -> new ExtensionItemBlock();
+            case ItemBlock -> new ItemBlock();
         };
     }
 
@@ -133,7 +125,7 @@ public abstract class Block {
     //select for the block
     public Block selectBlock(boolean isItem, int erasedLineCount) {
         // 10줄이 삭제될 때마다 아이템 블록 생성 로직
-        if (isItem && erasedLineCount % 3 == 0 && getErasedLineCountForItem() < erasedLineCount) {
+        if (isItem && erasedLineCount % 10 == 0 && getErasedLineCountForItem() < erasedLineCount) {
             setErasedLineCountForItem(erasedLineCount);
             return selectItemBlock();
         } else {
@@ -158,6 +150,8 @@ public abstract class Block {
         return switch (rwSelection.select()) {
             case 0 -> new ItemBlock().waterBlock();
             case 1 -> new ItemBlock().lineBlock();
+            case 2 -> new BombItemBlock();
+            case 3 -> new ExtensionItemBlock();
             default -> new WeightItemBlock();
         };
     }

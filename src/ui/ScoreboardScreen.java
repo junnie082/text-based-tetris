@@ -107,7 +107,7 @@ public class ScoreboardScreen extends JFrame implements ActionListener {
         // 상위 10개 스코어 표시
         for (int i = 0; i < topScores.size(); i++) {
             Score score = topScores.get(i);
-            JLabel scoreLabel = new JLabel((i + 1) + ". " + score.getPlayerName() + " - " + score.getScore(), SwingConstants.CENTER);
+            JLabel scoreLabel = new JLabel((i + 1) + ". " + score.getPlayerName() + "(" + score.getDifficulty() + ")" + " - " + score.getScore(), SwingConstants.CENTER);
             scoreLabel.setFont(new Font(title.getFont().getName(), Font.PLAIN, fontSize));
             scorePanel.add(scoreLabel);
         }
@@ -185,7 +185,7 @@ public class ScoreboardScreen extends JFrame implements ActionListener {
         for (int i = 0; i < topScores.size(); i++) {
 
             Score score = topScores.get(i);
-            JLabel scoreLabel = new JLabel((i + 1) + ". " + score.getPlayerName() + " - " + score.getScore(), SwingConstants.CENTER);
+            JLabel scoreLabel = new JLabel((i + 1) + ". " + score.getPlayerName() + "(" + score.getDifficulty() + ")" + " - " + score.getScore(), SwingConstants.CENTER);
 
             scoreLabel.setFont(new Font(title.getFont().getName(), Font.PLAIN, fontSize));
             if (score.equals(currScore)) {
@@ -210,8 +210,8 @@ public class ScoreboardScreen extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         if (command.equals("menu")) {
-            new MainMenuScreen();
             setVisible(false);
+            new MainMenuScreen();
         }
     }
 }

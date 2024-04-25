@@ -20,13 +20,13 @@ public class GameController implements PauseScreenCallback {
     private int RIGHT = keyCodes[2];
     private int DOWN = keyCodes[3];
     private int DROP = keyCodes[4];
-    private JFrame frame;
-    private Timer timer;
+    JFrame frame;
+    Timer timer;
 
 
     final int MAX_SPEED = 200;
 
-    private int currentSpeed;
+    int currentSpeed;
     private boolean isItem;
 
     // 게임 컨트롤러 생성자
@@ -64,13 +64,11 @@ public class GameController implements PauseScreenCallback {
 
     @Override
     public void onResumeGame() {
-        System.out.println("On Resume Game");
         timer.start();
     }
 
     @Override
     public void onHideFrame() {
-        System.out.println("On Hide Frame");
         frame.setVisible(false);
     }
 

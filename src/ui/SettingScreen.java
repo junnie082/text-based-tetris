@@ -147,8 +147,9 @@ SettingScreen extends JFrame implements ActionListener {
         } else if (btnInitializeItemScore.isFocusOwner()) {
             scoreController.resetScores(true);
         } else if (btnInitializeSetting.isFocusOwner()) {
-            setWidthHeight(400, 550, this);
             settingController.initializeSettings();
+            setVisible(false);
+            new SettingScreen();
         } else if (btnColorBlind0.isFocusOwner()) {
             // 기본
             settingController.setColorBlindMode("default");
@@ -196,8 +197,9 @@ SettingScreen extends JFrame implements ActionListener {
         } else if (command.equals("scoreItem")) {
             scoreController.resetScores(true);
         } else if (command.equals("initialize")) {
-            setWidthHeight(400, 550, this);
             settingController.initializeSettings();
+            setVisible(false);
+            new SettingScreen();
         } else if (command.equals("default")) {
             // 기본
             settingController.setColorBlindMode("default");
@@ -275,5 +277,11 @@ SettingScreen extends JFrame implements ActionListener {
         } else if (btnColorBlind1.isFocusOwner()) {
             btnColorBlind0.requestFocusInWindow();
         }
+    }
+
+    // 테스트 코드 작성을 위한 메서드
+    public SettingController getSettingController() {
+
+        return this.settingController;
     }
 }
