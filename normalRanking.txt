@@ -1,3 +1,4 @@
+익명:Easy:530
 Player11:Easy:100
 Test Player:Hard:100
 Player10:Easy:90
@@ -7,4 +8,3 @@ ui:Easy:80
 Player8:Easy:70
 익명:Easy:64
 익명:Easy:62
-Player7:Easy:60
